@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-3">
+    <a href="{{ url_for('recipe.index') }}" class="text-decoration-none btn btn-sm btn-light border text-muted">&larr; 返回總覽</a>
+</div>
+
+<div class="card shadow-sm mb-4 border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center flex-wrap">
+        <h2 class="mb-0 text-primary fw-bold">{{ recipe.title }}</h2>
+        <div class="mt-2 mt-sm-0">
+            <a href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}" class="btn btn-outline-primary btn-sm me-2">📝 編輯</a>
+            <!-- 刪除按鈕觸發 Modal -->
+            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                🗑️ 刪除
+            </button>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <p class="text-muted small border-bottom pb-3 mb-4">
+            🗓️ 建立時間：{{ recipe.created_at.strftime('%Y-%m-%d %H:%M') }} &nbsp;|&nbsp; 
+            🕒 最後更新：{{ recipe.updated_at.strftime('%Y-%m-%d %H:%M') }}
+        </p>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="p-4 bg-light rounded h-100 border">
+                    <h5 class="border-bottom border-secondary-subtle pb-2 mb-3 fw-bold text-dark">🛒 材料清單</h5>
+                    <div class="whitespace-pre text-dark">{{ recipe.ingredients }}</div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="p-4 h-100">
+                    <h5 class="border-bottom border-secondary-subtle pb-2 mb-3 fw-bold text-dark">🍳 烹飪步驟</h5>
+                    <div class="whitespace-pre lh-lg text-dark fs-6">{{ recipe.steps }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 刪除確認 Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="deleteModalLabel">⚠️ 確認刪除</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-dark py-4">
+                你確定要刪除「<strong class="text-danger">{{ recipe.title }}</strong>」這個食譜嗎？刪除後將無法復原。
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">取消</button>
+                <form action="{{ url_for('recipe.delete_recipe', id=recipe.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger px-4">確定刪除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

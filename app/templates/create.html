@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h4 class="mb-0 text-primary fw-bold">新增食譜</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('recipe.create_recipe') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-bold">食譜名稱 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ title if title else '' }}" required placeholder="例如：番茄炒蛋">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ingredients" class="form-label fw-bold">材料清單 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="ingredients" name="ingredients" rows="5" required placeholder="例如：&#10;番茄 2 顆&#10;雞蛋 3 顆&#10;青蔥 半根">{{ ingredients if ingredients else '' }}</textarea>
+                        <div class="form-text">您可以直接拖曳右下角調整輸入框大小。每項材料建議換行輸入。</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="steps" class="form-label fw-bold">烹飪步驟 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="steps" name="steps" rows="8" required placeholder="例如：&#10;1. 備料：番茄切塊，雞蛋打散。&#10;2. 炒蛋：熱油將雞蛋炒至軟嫩後盛出。&#10;3. 燴番茄：鍋內再補少許油，將番茄炒軟出汁...">{{ steps if steps else '' }}</textarea>
+                    </div>
+                    <div class="d-flex justify-content-between pt-2 border-top">
+                        <a href="{{ url_for('recipe.index') }}" class="btn btn-outline-secondary mt-3">取消返回</a>
+                        <button type="submit" class="btn btn-primary px-4 mt-3">儲存食譜</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

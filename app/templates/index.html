@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="mb-0 fw-bold">食譜總覽</h2>
+    </div>
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <form class="d-flex" method="GET" action="{{ url_for('recipe.index') }}">
+            <input class="form-control me-2" type="search" name="q" placeholder="搜尋食譜或材料..." value="{{ q }}">
+            <button class="btn btn-outline-primary text-nowrap" type="submit">搜尋</button>
+            {% if q %}
+                <a href="{{ url_for('recipe.index') }}" class="btn btn-outline-secondary ms-2 text-nowrap">清除</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% if recipes %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for recipe in recipes %}
+        <div class="col">
+            <div class="card h-100 shadow-sm recipe-card border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-primary fw-bold">{{ recipe.title }}</h5>
+                    <p class="card-text text-muted small mb-3 border-bottom pb-2">更新於 {{ recipe.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <p class="card-text text-truncate text-muted">{{ recipe.ingredients }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0 pt-0">
+                    <a href="{{ url_for('recipe.detail', id=recipe.id) }}" class="btn btn-sm btn-outline-primary w-100">查看詳情</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-light border text-center py-5 shadow-sm">
+        <h4 class="alert-heading mb-3 pt-3">找不到食譜 😢</h4>
+        {% if q %}
+            <p class="text-muted">沒有找到與「<strong class="text-dark">{{ q }}</strong>」相符的食譜，請換個關鍵字再試一次！</p>
+            <a href="{{ url_for('recipe.index') }}" class="btn btn-primary mt-2 mb-3">返回總覽</a>
+        {% else %}
+            <p class="text-muted">你還沒有收藏任何食譜哦！馬上來建立第一份食譜紀錄吧。</p>
+            <a href="{{ url_for('recipe.create_recipe') }}" class="btn btn-primary mt-2 mb-3">現在就去新增一筆</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}
